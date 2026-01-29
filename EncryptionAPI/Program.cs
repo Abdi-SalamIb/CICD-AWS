@@ -2,6 +2,10 @@ using EncryptionAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Port pour AWS Elastic Beanstalk
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Lägg till tjänster
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -23,8 +27,6 @@ app.UseSwaggerUI(c =>
 // OMDIRIGERING: "/" går till "/swagger"
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
