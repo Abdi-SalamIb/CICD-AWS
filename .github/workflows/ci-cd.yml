@@ -27,6 +27,7 @@ jobs:
           dotnet-version: '9.0.x'
       - run: dotnet publish EncryptionAPI/EncryptionAPI.csproj -c Release -o publish
       - run: cp Procfile publish/
+      - run: cp -r .platform publish/
       - run: cd publish && zip -r ../app.zip .
       - name: Deploy to AWS
         uses: einaregilsson/beanstalk-deploy@v21
