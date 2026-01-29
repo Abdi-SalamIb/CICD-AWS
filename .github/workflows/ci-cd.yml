@@ -1,11 +1,9 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -17,3 +15,25 @@ jobs:
       - run: dotnet restore
       - run: dotnet build --no-restore -c Release
       - run: dotnet test --no-build -c Release
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - run: dotnet publish EncryptionAPI/EncryptionAPI.csproj -c Release -o publish
+      - run: cd publish && zip -r ../app.zip .
+      - name: Deploy to AWS
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: encryption-api
+          environment_name: Encryption-api-env
+          region: eu-north-1
+          version_label: ${{ github.sha }}
+          deployment_package: app.zip
