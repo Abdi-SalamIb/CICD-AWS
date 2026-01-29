@@ -3,8 +3,7 @@ using EncryptionAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Port pour AWS Elastic Beanstalk
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 // Lägg till tjänster
 builder.Services.AddControllers();
@@ -16,7 +15,7 @@ builder.Services.AddScoped<ICryptoService, CaesarCipherService>();
 
 var app = builder.Build();
 
-// Konfigurera Swagger (alltid aktiv)
+// Konfigurera Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -24,8 +23,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-// OMDIRIGERING: "/" går till "/swagger"
-app.MapGet("/", () => Results.Redirect("/swagger"));
+// Health check endpoint för AWS
+app.MapGet("/", () => "API is running!");
 
 app.UseAuthorization();
 app.MapControllers();
