@@ -51,6 +51,15 @@ namespace EncryptionAPI.Controllers
                 Operation = "Dekryptering"
             });
         }
+
+        /// <summary>
+        /// Hello endpoint pour démontrer Git Flow
+        /// </summary>
+        [HttpGet("hello")]
+        public ActionResult<string> Hello()
+        {
+            return Ok("Hello from Encryption API!");
+        }
     }
 
     public class CryptoRequest
