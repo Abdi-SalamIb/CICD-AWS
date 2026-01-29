@@ -37,3 +37,4 @@ jobs:
           region: eu-north-1
           version_label: ${{ github.sha }}
           deployment_package: app.zip
+          wait_for_deployment: false
