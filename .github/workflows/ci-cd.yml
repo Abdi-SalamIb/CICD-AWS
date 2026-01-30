@@ -34,7 +34,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: encryption-api
+          application_name: Encryption-api-env
           environment_name: Encryption-api-env-env-net8
           region: eu-north-1
           version_label: ver-${{ github.run_number }}-${{ github.run_attempt }}
