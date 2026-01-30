@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '8.0.x'
       - run: dotnet restore
       - run: dotnet build --no-restore -c Release
       - run: dotnet test --no-build -c Release
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '8.0.x'
       - run: dotnet publish EncryptionAPI/EncryptionAPI.csproj -c Release -o publish
       - run: cp Procfile publish/
       - run: cp -r .platform publish/
@@ -34,8 +34,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: encryption-api
-          environment_name: Encryption-api-env
+          application_name: Encryption-api-env
+          environment_name: Encryption-api-env-env-net8
           region: eu-north-1
           version_label: ${{ github.sha }}
           deployment_package: app.zip
